@@ -1,6 +1,7 @@
 import './index.less';
 import React, { Component } from 'react';
 import { render } from 'react-dom';
+import 'whatwg-fetch';
 
 import { Input, Form, Button } from 'antd';
 
@@ -14,9 +15,18 @@ class App extends Component {
     handleSubmit = (e) => {
         e.preventDefault();
         this.props.form.validateFields((err, values) => {
-        if (!err) {
-            console.log('Received values of form: ', values);
-        }
+            if (!err) {
+                fetch('http://localhost:3000/api/login', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                    body: `username=${values.userName}&password=${values.password}`
+                })
+                .then(response => response.json())
+                .then(json => {
+                    console.log(json);
+                })
+                .catch(error => console.log(error));
+            }
         });
     }
 

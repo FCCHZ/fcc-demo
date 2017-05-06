@@ -8,6 +8,8 @@ import webpackHotMiddleware from 'webpack-hot-middleware';
 import webpackConfig from './webpack.config';
 import config from './config';
 
+import routes from './routes';
+
 const staticDir = path.join(__dirname, 'dist');
 const app = express();
 
@@ -28,6 +30,8 @@ app.use(webpackHotMiddleware(compiler));
 
 app.use(express.static(staticDir));
 app.use(bodyParser.urlencoded({ extended: true }));
+
+app.use('/', routes);
 
 app.listen(config.port, config.host, () => {
     console.log(`server is running at: ${config.host}:${config.port}`);
